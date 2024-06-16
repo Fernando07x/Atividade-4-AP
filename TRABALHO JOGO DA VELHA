@@ -1,0 +1,56 @@
+elementos = {1:"-" , 2:"-" , 3:"-" , 4:"-", 5:"-", 6:"-", 7:"-", 8:"-", 9:"-"}
+player = "X"
+
+def apresentarjogo():
+    print()
+    for elemento in elementos:
+        valor = str(elemento if elementos.get(elemento) == "-" else elementos.get(elemento))
+        print(valor if elemento % 3 == 0 else valor + " | ", end = "\n" if elemento % 3 == 0 else "")
+    print()
+
+def fimdejogo():
+    if "-" in elementos.values():
+        return False
+    else:
+        print("Sem vecendor")
+        return True
+
+def ganhador():
+    jogadas = []
+    combinacoes = [[1,2,3],[1,5,9],[1,4,7],[2,5,8],[3,5,7],[3,6,9],[4,5,6],[7,8,9]]
+    contador = 0
+
+    for elemento in elementos:
+        if elementos.get(elemento) == player:
+            jogadas.append(elemento)
+
+    if len(jogadas) < 3:
+            return False
+
+    jogadas.sort()
+
+    for combinacao in combinacoes:
+        if set(combinacao).issubset(jogadas):
+            print("Player " + player + " é o vencedor")
+            return True
+    return False
+
+def jogar(player):
+    jogadavali = False
+    while not jogadavali:
+        jogada = input("Jogador " + player + ", informe o número  da sua jogada: ")
+        jogadavali = True if elementos[int(jogada)] == "-" else False
+        if not jogadavali:
+            print("Posição ocupada.")
+        elementos[int(jogada)] = player
+
+def alternarplayer(player):
+    return "0" if player == "X" else "X"
+
+while not fimdejogo():
+    apresentarjogo()
+    jogar(player)
+    if ganhador():
+        apresentarjogo()
+        break
+player = alternarplayer(player)
